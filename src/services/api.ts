@@ -19,18 +19,24 @@ export const fetchAuthorities = async () => {
 
 export const fetchEstablishments = async ({
   localAuthorityId,
+  name,
   pageSize,
   pageNumber,
+  ratingKey,
   sortOptionKey
 }: {
     localAuthorityId: number;
+    name?: string;
     pageSize?: number;
     pageNumber?: number,
+    ratingKey?: string;
     sortOptionKey?: string
 }) => {
   const params: Record<string, string | number> = { localAuthorityId };
+  if (name) params.name = name;
   if (pageSize !== undefined) params.pageSize = pageSize;
   if (pageNumber !== undefined) params.pageNumber = pageNumber;
+  if (ratingKey !== undefined) params.ratingKey = ratingKey;
   if (sortOptionKey !== undefined) params.sortOptionKey = sortOptionKey;
 
   const queryString = new URLSearchParams(params).toString();

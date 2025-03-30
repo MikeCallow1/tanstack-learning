@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useParams, useSearch } from "@tanstack/react-router";
+import { useNavigate, useParams, useSearch } from "@tanstack/react-router";
 import { useForm, AnyFieldApi } from "@tanstack/react-form";
 import { fetchEstablishments, getSortOptions } from "../services/api";
 import { EstablishmentsList } from "../components/EstablishmentsList";
@@ -10,8 +10,10 @@ const PAGE_SIZE = 10;
 export const EstablishmentsPage = () => {
   const { localAuthorityId } = useParams({ from: "/establishments/$localAuthorityId" });
 
-  const search = useSearch({ strict: false }) as { page?: string };
+  const search = useSearch({ strict: false }) as { page?: string, name?: string, sortOptionKey?: string };
   const pageNumber = Number(search.page) || 1;
+  const name = search.name || '';
+  const sortOptionKey = search.sortOptionKey || '';
 
   // Sort values are fetched from the API
   const { data: sortValues, isLoading: isSortValuesLoading } = useQuery({
@@ -19,19 +21,34 @@ export const EstablishmentsPage = () => {
     queryFn: () => getSortOptions(),
   });
 
+  const navigate = useNavigate();
+
   const form = useForm({
     defaultValues: {
-      rating: '',
+      name: search.name || '',
       sortBy: sortValues?.sortOptions
     },
     onSubmit: ({ value }) => {
-      console.log(value);
+      navigate({
+        to: `/establishments/${localAuthorityId}`,
+        search: {
+          page: 1,
+          name: value.name,
+          sortOptionKey: value.sortBy,
+        },
+      })
     },
   });
 
   const { data, error, isLoading } = useQuery({
-    queryKey: ["establishments", localAuthorityId, pageNumber],
-    queryFn: () => fetchEstablishments({ localAuthorityId: Number(localAuthorityId), pageSize: PAGE_SIZE, pageNumber }),
+    queryKey: ["establishments", localAuthorityId, pageNumber, name, sortOptionKey],
+    queryFn: () => fetchEstablishments({
+      localAuthorityId: Number(localAuthorityId),
+      name,
+      pageSize: PAGE_SIZE,
+      pageNumber,
+      sortOptionKey: search.sortOptionKey
+    }),
   });
 
   if (isLoading) return <p>Loading establishments...</p>;
@@ -63,14 +80,14 @@ export const EstablishmentsPage = () => {
         className="mt-4 space-y-4">
         <div className="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-6 bg-gray-100 p-4 rounded-lg shadow-md">
           <form.Field
-            name="rating"
-            validators={{
-              onChange: ({ value }) => !value ? 'Rating is required' : undefined,
-            }}
+            name="name"
+            // validators={{
+            //   onChange: ({ value }) => !value ? 'Name is required' : undefined,
+            // }}
             children={(field) => (
               <div className="flex flex-col w-full md:w-auto">
                 <label htmlFor={field.name} className="block text-sm font-medium text-gray-700">
-                  Rating
+                  Filter by Name
                 </label>
                 <input
                   id={field.name}
