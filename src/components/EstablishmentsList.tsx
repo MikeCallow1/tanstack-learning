@@ -1,12 +1,13 @@
+import { EstablishmentsResponse } from '../types'
+import { EstablishmentListItem } from './EstablishmentListItem'
 
-interface Props {
-  authorityId: number;
-}
-
-export const EstablishmentsList: React.FC<Props> = ({ authorityId }) => {
-  return (
-    <ul className="mt-4 space-y-2">
-
-    </ul>
-  );
-};
+export const EstablishmentsList = ({ data }: { data: EstablishmentsResponse | undefined }) => (
+  <ul className="mt-4 space-y-2">
+    {data?.establishments?.map((establishment) => (
+      <EstablishmentListItem
+        key={establishment.FHRSID}
+        establishment={establishment}
+      />
+    ))}
+  </ul>
+)
