@@ -5,14 +5,14 @@ export const PaginationControls = ({ pageNumber, totalPages }: { pageNumber: num
     <Link
       className={`px-3 py-1 rounded ${pageNumber === 1 ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-blue-500 text-white hover:bg-blue-600'}`}
       disabled={pageNumber === 1}
-      search={{ page: 1 }}
+      search={(prev) => ({ ...prev, page: 1 })}
     >
       First
     </Link>
     <Link
       className={`px-3 py-1 rounded ${pageNumber === 1 ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-blue-500 text-white hover:bg-blue-600'}`}
       disabled={pageNumber === 1}
-      search={{ page: Number(pageNumber - 1) }}
+      search={(prev) => ({ ...prev, page: Number(pageNumber - 1) })}
     >
       Prev
     </Link>
@@ -22,14 +22,14 @@ export const PaginationControls = ({ pageNumber, totalPages }: { pageNumber: num
     <Link
       className={`px-3 py-1 rounded ${pageNumber === totalPages ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-blue-500 text-white hover:bg-blue-600'}`}
       disabled={pageNumber === totalPages}
-      search={{ page: Number(pageNumber + 1) }}
+      search={(prev) => ({ ...prev, page: Number(pageNumber + 1) })}
     >
       Next
     </Link>
     <Link
       className={`px-3 py-1 rounded ${pageNumber === totalPages ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-blue-500 text-white hover:bg-blue-600'}`}
       disabled={pageNumber === totalPages}
-      search={{ page: Number(totalPages) }}
+      search={(prev) => ({ ...prev, page: totalPages })}
     >
       Last
     </Link>
