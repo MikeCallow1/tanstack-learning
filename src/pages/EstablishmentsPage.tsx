@@ -104,6 +104,7 @@ export const EstablishmentsPage = () => {
 
           <form.Field
             name="sortBy"
+            mode="array"
             children={(field) => (
               <div className="flex flex-col w-full md:w-auto">
                 <label htmlFor={field.name} className="block text-sm font-medium text-gray-700">
@@ -114,13 +115,11 @@ export const EstablishmentsPage = () => {
                   name={field.name}
                   value={field.state.value}
                   onBlur={field.handleBlur}
-                  onChange={(e) => {
-                    field.handleChange(e.target.value);
-                  }}
+                  onChange={(e) => field.handleChange(e.target.value)}
                   className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-white px-3 py-1"
                 >
                   <option value="">Select an option</option>
-                  {sortValues?.sortOptions?.map((option) => (
+                  {field.options.form.options.defaultValues?.sortBy?.map((option) => ( // what
                     <option key={option.sortOptionId} value={option.sortOptionKey}>
                       {option.sortOptionName}
                     </option>
@@ -147,10 +146,10 @@ export const EstablishmentsPage = () => {
             )}
           />
         </div>
-      </form>
+      </form >
       <EstablishmentsList data={data} />
 
       <PaginationControls pageNumber={pageNumber} totalPages={data?.meta.totalPages || 1} />
-    </div>
+    </div >
   );
 };
