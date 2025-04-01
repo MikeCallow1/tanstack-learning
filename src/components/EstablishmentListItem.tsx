@@ -16,15 +16,15 @@ export const EstablishmentListItem = ({ establishment }: { establishment: Establ
             case "Exempt":
               return "🤷";
             case "0":
-              return "🤢";
+              return "🤮";
             case "1":
-              return "😞";
+              return "🤢";
             case "2":
-              return "😐";
+              return "😞";
             case "3":
-              return "🙂";
+              return "😐";
             case "4":
-              return "😃";
+              return "🙂";
             case "5":
               return "🤩";
             case "AwaitingInspection":
