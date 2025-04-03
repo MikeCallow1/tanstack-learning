@@ -3,9 +3,9 @@ import { Establishment } from "../types"
 
 export const EstablishmentListItem = ({ establishment }: { establishment: Establishment }) => (
   <Link
-    to={`/establishment/${establishment.FHRSID}`}
+    to={`/establishment/$fhrsId`}
     className="block text-gray-800 no-underline hover:text-blue-600"
-    prefetch="intent"
+    params={{ fhrsId: establishment.FHRSID.toString() }}
   >
     <li key={establishment.FHRSID} className="border p-4 rounded shadow hover:shadow-lg transition">
       <h2 className="font-bold">{establishment.BusinessName}</h2>
